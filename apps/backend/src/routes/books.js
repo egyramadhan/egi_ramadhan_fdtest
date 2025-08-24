@@ -205,7 +205,7 @@ router.post('/',
   async (req, res, next) => {
     try {
       const { title, author, description, rating } = req.body;
-      const thumbnailUrl = req.file ? `/uploads/${req.file.filename}` : null;
+      const thumbnailUrl = req.file ? `/uploads/thumbnails/${req.file.filename}` : null;
 
       const book = await BookService.createBook({
         title,
@@ -332,7 +332,7 @@ router.patch('/:id',
     try {
       const { id } = req.params;
       const { title, author, description, rating } = req.body;
-      const thumbnailUrl = req.file ? `/uploads/${req.file.filename}` : undefined;
+      const thumbnailUrl = req.file ? `/uploads/thumbnails/${req.file.filename}` : undefined;
 
       const updateData = {};
       if (title !== undefined) updateData.title = title;

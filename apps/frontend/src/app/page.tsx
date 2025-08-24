@@ -3,6 +3,7 @@
 import { useAuth } from '@/lib/auth-context'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { BookOpenIcon, UserGroupIcon, ShieldCheckIcon, MagnifyingGlassIcon, FunnelIcon } from '@heroicons/react/24/outline'
 
 interface Book {
@@ -78,8 +79,8 @@ export default function HomePage() {
         
         // Extract unique authors for filter dropdown
         if (initial) {
-          const uniqueAuthors = [...new Set((data.data.books || []).map((book: Book) => book.author))]
-          setAuthors(uniqueAuthors)
+          const uniqueAuthors = Array.from(new Set((data.data.books || []).map((book: Book) => book.author)))
+          setAuthors(uniqueAuthors as string[])
         }
       }
     } catch (error) {
@@ -195,49 +196,6 @@ export default function HomePage() {
                   Go to Dashboard
                 </Link>
               )}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Features Section */}
-      <div className="py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-              Why Choose Our Platform?
-            </h2>
-            <p className="mt-4 text-lg text-gray-600">
-              Everything you need to manage and discover books
-            </p>
-          </div>
-          <div className="mt-20 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            <div className="card text-center">
-              <BookOpenIcon className="h-12 w-12 text-primary-600 mx-auto" />
-              <h3 className="mt-4 text-lg font-semibold text-gray-900">
-                Extensive Library
-              </h3>
-              <p className="mt-2 text-gray-600">
-                Access thousands of books across various genres and categories
-              </p>
-            </div>
-            <div className="card text-center">
-              <UserGroupIcon className="h-12 w-12 text-primary-600 mx-auto" />
-              <h3 className="mt-4 text-lg font-semibold text-gray-900">
-                Community Driven
-              </h3>
-              <p className="mt-2 text-gray-600">
-                Connect with other readers and share your favorite books
-              </p>
-            </div>
-            <div className="card text-center">
-              <ShieldCheckIcon className="h-12 w-12 text-primary-600 mx-auto" />
-              <h3 className="mt-4 text-lg font-semibold text-gray-900">
-                Secure & Private
-              </h3>
-              <p className="mt-2 text-gray-600">
-                Your data is protected with enterprise-grade security
-              </p>
             </div>
           </div>
         </div>
@@ -369,9 +327,11 @@ export default function HomePage() {
                   {books.map((book) => (
                     <div key={book.id} className="card hover:shadow-md transition-shadow">
                       {book.thumbnailUrl && (
-                        <img
-                          src={book.thumbnailUrl}
+                        <Image
+                          src={book.thumbnailUrl.startsWith('http') ? book.thumbnailUrl : `${process.env.NEXT_PUBLIC_API_URL?.replace('/api', '')}${book.thumbnailUrl}`}
                           alt={book.title}
+                          width={300}
+                          height={192}
                           className="w-full h-48 object-cover rounded-md mb-4"
                         />
                       )}

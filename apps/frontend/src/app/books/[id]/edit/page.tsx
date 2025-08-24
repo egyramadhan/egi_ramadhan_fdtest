@@ -79,7 +79,7 @@ function EditBookPage() {
 
       if (response.ok) {
         const data = await response.json()
-        const bookData = data.data
+        const bookData = data.data.book
         setBook(bookData)
         
         // Set form values
@@ -147,7 +147,7 @@ function EditBookPage() {
     if (!book) return
     
     // Check permissions
-    if (!user || (user.id !== book.creator.id && !user.isAdmin)) {
+    if (!user || !book.creator || (String(user.id) !== book.creator.id && !user.isAdmin)) {
       toast.error('You do not have permission to edit this book')
       return
     }
@@ -211,7 +211,7 @@ function EditBookPage() {
   }
 
   // Check permissions
-  if (!user || (user.id !== book.creator.id && !user.isAdmin)) {
+  if (!user || !book.creator || (String(user.id) !== book.creator.id && !user.isAdmin)) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">

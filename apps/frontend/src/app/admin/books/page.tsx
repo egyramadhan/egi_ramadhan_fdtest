@@ -340,7 +340,7 @@ function AdminBooksPage() {
                 <div className="aspect-w-3 aspect-h-4">
                   {book.thumbnailUrl ? (
                     <img
-                      src={book.thumbnailUrl}
+                      src={book.thumbnailUrl.startsWith('http') ? book.thumbnailUrl : `${process.env.NEXT_PUBLIC_API_URL?.replace('/api', '')}${book.thumbnailUrl}`}
                       alt={book.title}
                       className="w-full h-48 object-cover rounded-t-lg"
                     />

@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
+import Image from 'next/image'
 import { useAuth } from '@/lib/auth-context'
 import toast from 'react-hot-toast'
 import Cookies from 'js-cookie'
@@ -54,7 +55,7 @@ function BookDetailPage() {
 
       if (response.ok) {
         const data = await response.json()
-        setBook(data.data)
+        setBook(data.data.book)
       } else if (response.status === 404) {
         toast.error('Book not found')
         router.push('/dashboard')
@@ -99,8 +100,8 @@ function BookDetailPage() {
     }
   }
 
-  const canEdit = user && (user.id === book?.creator.id || user.isAdmin)
-  const canDelete = user && (user.id === book?.creator.id || user.isAdmin)
+  const canEdit = user && book && (String(user.id) === book.creator?.id || user.isAdmin)
+  const canDelete = user && book && (String(user.id) === book.creator?.id || user.isAdmin)
 
   if (loading) {
     return (
@@ -172,9 +173,11 @@ function BookDetailPage() {
               </div>
               {book.thumbnailUrl && (
                 <div className="ml-6 flex-shrink-0">
-                  <img
-                    src={book.thumbnailUrl}
+                  <Image
+                    src={book.thumbnailUrl.startsWith('http') ? book.thumbnailUrl : `${process.env.NEXT_PUBLIC_API_URL?.replace('/api', '')}${book.thumbnailUrl}`}
                     alt={book.title}
+                    width={144}
+                    height={192}
                     className="h-48 w-36 object-cover rounded-lg shadow-md"
                   />
                 </div>
@@ -226,7 +229,7 @@ function BookDetailPage() {
               
               <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                 <dt className="text-sm font-medium text-gray-500">Created by</dt>
-                <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{book.creator.name}</dd>
+                <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{book.creator?.name || 'Unknown'}</dd>
               </div>
               
               <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">

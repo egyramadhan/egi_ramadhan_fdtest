@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { useAuth, withAuth } from '@/lib/auth-context'
 import toast from 'react-hot-toast'
 import Cookies from 'js-cookie'
@@ -227,12 +228,6 @@ function DashboardPage() {
               >
                 Add New Book
               </Link>
-              <Link
-                href="/books"
-                className="text-primary-600 hover:text-primary-500 text-sm font-medium"
-              >
-                View all books →
-              </Link>
             </div>
           </div>
 
@@ -259,10 +254,12 @@ function DashboardPage() {
                       <div className="flex items-center">
                         <div className="flex-shrink-0">
                           {book.thumbnailUrl ? (
-                            <img
+                            <Image
                               className="h-16 w-12 object-cover rounded"
-                              src={`${process.env.NEXT_PUBLIC_API_URL?.replace('/api', '')}${book.thumbnailUrl}`}
+                              src={book.thumbnailUrl.startsWith('http') ? book.thumbnailUrl : `${process.env.NEXT_PUBLIC_API_URL?.replace('/api', '')}${book.thumbnailUrl}`}
                               alt={book.title}
+                              width={48}
+                              height={64}
                             />
                           ) : (
                             <div className="h-16 w-12 bg-gray-200 rounded flex items-center justify-center">
