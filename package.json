@@ -1,0 +1,36 @@
+{
+  "name": "egi_ramadhan_fdtest",
+  "version": "1.0.0",
+  "description": "Full-stack application with Next.js frontend and Express.js backend",
+  "private": true,
+  "workspaces": [
+    "apps/frontend",
+    "apps/backend"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspaces",
+    "build": "npm run build --workspaces",
+    "start": "npm run start --workspaces",
+    "test": "npm run test --workspaces",
+    "lint": "npm run lint --workspaces",
+    "install:all": "npm install",
+    "dev:frontend": "npm run dev --workspace=apps/frontend",
+    "dev:backend": "npm run dev --workspace=apps/backend",
+    "build:frontend": "npm run build --workspace=apps/frontend",
+    "build:backend": "npm run build --workspace=apps/backend"
+  },
+  "keywords": [
+    "nextjs",
+    "express",
+    "postgresql",
+    "redis",
+    "jwt",
+    "authentication"
+  ],
+  "author": "Egi Ramadhan",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  }
+}
